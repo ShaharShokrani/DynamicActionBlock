@@ -1,0 +1,22 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ActionBlockAdaptiveQueue", "..\ActionBlockAdaptiveQueue\ActionBlockAdaptiveQueue.csproj", "{BCF84705-820D-44D2-A6E3-CEF25BFED19A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ActionBlockAdaptiveQueueTests", "ActionBlockAdaptiveQueueTests\ActionBlockAdaptiveQueueTests.csproj", "{B9141C35-5098-46F5-B17E-E7E0C87B97AF}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{BCF84705-820D-44D2-A6E3-CEF25BFED19A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BCF84705-820D-44D2-A6E3-CEF25BFED19A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BCF84705-820D-44D2-A6E3-CEF25BFED19A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BCF84705-820D-44D2-A6E3-CEF25BFED19A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B9141C35-5098-46F5-B17E-E7E0C87B97AF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B9141C35-5098-46F5-B17E-E7E0C87B97AF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B9141C35-5098-46F5-B17E-E7E0C87B97AF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B9141C35-5098-46F5-B17E-E7E0C87B97AF}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
