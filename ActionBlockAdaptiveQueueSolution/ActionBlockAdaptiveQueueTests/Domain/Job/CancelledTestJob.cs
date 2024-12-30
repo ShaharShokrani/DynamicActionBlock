@@ -1,4 +1,4 @@
-using ActionBlockAdaptiveQueue.Domain;
+using ActionBlockAdaptiveQueue.Domain.Job;
 
 namespace ActionBlockAdaptiveQueueTests.Domain.Job;
 

@@ -1,4 +1,4 @@
-namespace ActionBlockAdaptiveQueue.Domain;
+namespace ActionBlockAdaptiveQueue.Domain.Job;
 
 using System;
 using System.Threading;

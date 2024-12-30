@@ -1,4 +1,4 @@
-namespace ActionBlockAdaptiveQueue.Domain;
+namespace ActionBlockAdaptiveQueue.Domain.AdaptiveQueue;
 
 /// <summary>
 /// Example options class for storing concurrency/bounded capacity.

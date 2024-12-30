@@ -1,5 +1,5 @@
-using ActionBlockAdaptiveQueue.Domain;
-using ActionBlockAdaptiveQueue.Domain.IAdaptiveQueue;
+using ActionBlockAdaptiveQueue.Domain.AdaptiveQueue;
+using ActionBlockAdaptiveQueue.Domain.Job;
 using ActionBlockAdaptiveQueue.Infrastructure;
 using ActionBlockAdaptiveQueueTests.Domain.Job;
 using Microsoft.Extensions.Logging;
@@ -31,8 +31,6 @@ public class InMemoryAdaptiveQueueTests
         _adaptiveQueue = new InMemoryAdaptiveQueue<IJob>(_optionsMonitorMock.Object, _loggerMock.Object);
     }
 
-    #region StartAsync
-
     [Fact]
     public async Task StartAsync_InitializesQueue()
     {
@@ -44,10 +42,6 @@ public class InMemoryAdaptiveQueueTests
     {
         // (test body to be implemented)
     }
-    
-    #endregion
-
-    #region TryEnqueue
 
     [Fact]
     public async Task TryEnqueue_ThrowsArgumentNullException_WhenJobIsNull()
@@ -93,17 +87,29 @@ public class InMemoryAdaptiveQueueTests
         _adaptiveQueue.TryEnqueue(job2);
         _adaptiveQueue.TryEnqueue(job3);
 
-        await _adaptiveQueue.StopAsync(CancellationToken.None);
-
+        await job1.TaskCompletionSource.Task;
+        await job2.TaskCompletionSource.Task;
+        await job3.TaskCompletionSource.Task;
+        
         Assert.True(job1.TaskCompletionSource.Task.IsCompleted);
         Assert.True(job2.TaskCompletionSource.Task.IsCompleted);
         Assert.True(job3.TaskCompletionSource.Task.IsCompleted);
     }
     
-    #endregion
+    [Fact]
+    public async Task TryEnqueue_JobExecution_ThrowsException_ShouldSetTaskCompletionSourceWithException()
+    {
+        // Arrange
+        await _adaptiveQueue.StartAsync(CancellationToken.None);
+        var failingJob = new FaultyTestJob(); // Assume FailingTestJob throws the exception in ExecuteAsync
 
-    #region TryEnqueueAsync
+        // Act
+        _adaptiveQueue.TryEnqueue(failingJob);
 
+        // Assert
+        var ex = await Assert.ThrowsAsync<InvalidOperationException>(() => failingJob.TaskCompletionSource.Task);
+    }
+    
     [Fact]
     public async Task TryEnqueueAsync_ThrowsArgumentNullException_WhenJobIsNull()
     {
@@ -158,10 +164,6 @@ public class InMemoryAdaptiveQueueTests
 
         Assert.True(result, "Enqueue should succeed when capacity is not exceeded.");
     }
-    
-    #endregion
-
-    #region StopAsync
 
     [Fact]
     public async Task StopAsync_StopsAcceptingNewJobs()
@@ -174,20 +176,17 @@ public class InMemoryAdaptiveQueueTests
         Assert.False(accepted, "No new jobs after Complete.");
     }
 
-    #endregion
-    
-    #region DisposeAsync
-    
     [Fact]
     public async Task DisposeAsync_WaitsForJobsToFinish()
     {
         await _adaptiveQueue.StartAsync(CancellationToken.None);
 
-        var job = new TestJob { Delay = 50 };
+        var job = new TestJob { Delay = 50, TaskCompletionSource = new TaskCompletionSource<bool>() };
         _adaptiveQueue.TryEnqueue(job);
 
         await _adaptiveQueue.DisposeAsync();
 
+        await job.TaskCompletionSource.Task;
         Assert.True(job.TaskCompletionSource.Task.IsCompleted, "DisposeAsync should wait for job to complete.");
     }
 
@@ -210,6 +209,4 @@ public class InMemoryAdaptiveQueueTests
             Times.Once
         );
     }
-    
-    #endregion
 }

@@ -1,4 +1,4 @@
-using ActionBlockAdaptiveQueue.Domain;
+using ActionBlockAdaptiveQueue.Domain.Job;
 
 namespace ActionBlockAdaptiveQueueTests.Domain.Job;
 
@@ -8,11 +8,11 @@ public class TestJob : IJob
 
 
     public Guid Id { get; }
-    public Task ExecuteAsync(CancellationToken cancellationToken)
+    public async Task ExecuteAsync(CancellationToken cancellationToken)
     {
-        throw new NotImplementedException();
+        await Task.Delay(Delay, cancellationToken);
     }
 
     public CancellationToken CancellationToken { get; set; }
-    public TaskCompletionSource<bool> TaskCompletionSource { get; set; }
+    public TaskCompletionSource<bool> TaskCompletionSource { get; set; } = new();
 }
